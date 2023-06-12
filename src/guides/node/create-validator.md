@@ -1,3 +1,5 @@
+
+
 # Creating a New Minipool (Validator)
 
 As a reminder, a `minipool` in Rocket Pool terms refers to a unique smart contract instance on the Execution Layer (ETH1) chain that your node manages.
@@ -201,7 +203,6 @@ The node has enough RPL staked to make 1 more 8-ETH minipools (or 2 more 16-ETH 
 
 This will show you how many minipools you can make of each bond size based on your RPL collateral.
 
-
 ## (Optional) Finding a Custom Vanity Address for your Minipool
 
 By default, when you create a new minipool, Rocket Pool will generate a random unique address for it.
@@ -269,12 +270,12 @@ For more advanced usage (such as searching for a different node address or chang
 ## Depositing ETH and Creating a Minipool
 
 ::: tip TIP
-If the market value of rETH is higher than its ETH backing (i.e., rETH is at a premium on the market), there is an opportunity to arbitrage the difference when creating a minipool.
-The value of the arbitrage is equal to the amount of protocol ETH in the minipool times the premium (minus a small amount of gas).
-E.g., if making a minipool when there's a 2.5% premium: `16 ETH * .025 = 0.4 ETH`.
+If the market value of rETH is higher than its ETH backing (i.e., rETH is at a premium on the market), there is an opportunity to arbitrage the difference when creating a minipool. 
+If you have enabled the rocketarb smartnode addon, you will be presented with a notification if the underlying conditions produce an arbitrage opportunity. The value of the arbitrage is equal to the amount of protocol ETH in the minipool times the premium (minus a small amount of gas).
+E.g., if making a 16 ETH minipool when there's a 2.5% premium: `16 ETH * .025 = 0.4 ETH`.
 In other words, you could receive 0.4 ETH back during these conditions just for creating a minipool!
 
-If you're interested in taking advantage of this opportunity, consider using the community-developed [rocketarb](https://github.com/xrchz/rocketarb/blob/main/README.md) tool to capture the profit of the MEV rETH arbitrage opportunity that launching your minipool creates.
+If you're interested in taking advantage of this opportunity, turn on the  [rocketarb](https://github.com/xrchz/rocketarb/blob/main/README.md) smartnode addon to capture the profit of the MEV rETH arbitrage opportunity that launching your minipool creates.
 
 To learn more about rocketarb, feel free to inquire about it on the [RP discord server](https://discord.gg/rocketpool).
 :::
@@ -319,6 +320,31 @@ After that you'll be notified of your commission rate for the new minipool, and 
 Your minipool will use the current fixed commission rate of 14.00%.
 You currently have 8.00 ETH in your credit balance.
 This deposit will use 8.000000 ETH from your credit balance and will not require any ETH from your node.
+```
+
+If there is a premium & you have chosen to arb it using the rocketarb addon, you will be presented with the potential profit for the arb:
+
+```
+There is currently a 2.5% market premium on rETH.
+Your minipool bond is 16
+You could arbitrage up to a 0.4 ETH profit
+```
+
+:: tip NOTE
+If you're using rocketarb, you will be asked how to fund the arbitrage tool:
+
+```
+Please choose loan source:
+1: Flashloan
+2: Uniswap
+3: Self fund
+```
+
+The smartnode will then execute a dryrun of the bundled deposit & sale transactions to return a final estimate of gas limit, cost & profitability
+
+```
+This is an estimate of what your gas limit and profit could be
+ESTIMATE GOES HERE
 ```
 
 You will next be prompted with the network's current gas costs recommendations; confirm your gas price selection and follow the rest of the prompts. 
@@ -371,6 +397,8 @@ If you accept, your minipool creation will be triggered.
 Once the transaction completes, you will be given the address of your new minipool contract on the eth1 chain and its corresponding validator public key on the Beacon Chain.
 You can visit these with any block explorers if you'd like.
 
+::tip NOTE
+If you are using rocketarb, there is a chance that your priority fee being too low will result in the transaction being reverted. By default, the rocketarb will try X number of times to push the transaction through before reverting back to the initial stages of the deposit process, resubmitting the dry-run to produce new estimates for cost and profitability.
 
 ## Confirming a Successful Stake
 
